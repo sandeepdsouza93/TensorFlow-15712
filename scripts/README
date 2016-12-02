@@ -1,0 +1,23 @@
+To start experiments use launcher.py. The script creates the appropriate number
+of VMs and launches the tensorflow script on each vm 
+
+To monitor progress of the experiment use monitor.py. The script will report
+the % completion for running training tasks. The name, number of workers,
+ps and training steps should correspond the launcher.py script inputs.
+
+I would recommend running the monitor.py script in different windows of
+a screen session because this script will run until the training completes.
+
+After training completes (monitor.py will detect this on its own), a directory
+with <name>_data will be created for storing output. We need the following
+data in the directory before we can safely delete the VM:
+> BW_stats.txt (measures network BW at ps every half hour)
+> accuracy_with_steps_worker<id>.py 
+> checkpoints (directory with checkpoints collected from main worker)
+> worker_<id> (directory for each worker; contains the train_output.log file)
+
+
+NOTE: In some places, the scripts has some hard constants because they were
+designed for 1 ps. If multiple ps are going to be created, replace the constants
+with the necessary ps id.
+
