@@ -316,7 +316,7 @@ def main(unused_argv):
 	break
       # Save the model checkpoint periodically.
       #if is_chief and (step % 1000 == 0 or (step + 1) == FLAGS.train_steps):
-      if (local_step % 1000 == 0 or (step + 1) == FLAGS.train_steps):
+      if (local_step % 1000 == 0 or (local_step + 1) == FLAGS.train_steps):
         print('Taking a Checkpoint @ Global Step '+str(step))
         checkpoint_dir = "/mnt/checkpoint"+str(step) 
         if tf.gfile.Exists(checkpoint_dir):
