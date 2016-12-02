@@ -7,6 +7,7 @@ import time
 # CLI parser
 parser = argparse.ArgumentParser()
 parser.add_argument("--name",help="Specify basename for vms (dont use '_' )")
+parser.add_argument("--use_existing_vm",help="True if the vms already exist")
 parser.add_argument("--num_workers", help="Specify number of workers",type=int)
 parser.add_argument("--num_parameter_servers", help="Specify number of parameter servers",type=int)
 parser.add_argument("--sync",help="Specify if the training should be done synchronously or not")
@@ -28,12 +29,14 @@ train_steps = args.train_steps
 approx_step = args.approx_step
 approx_interval = args.approx_interval
 layers_to_train = args.layers_to_train
+use_existing_vm = args.use_existing_vm
 
 # creating the vms for ps and workers
 create_cmd = 'tashi createMany --basename ' + name + ' --cores 8 --memory 4096 --disks tensorflow15712-new,ext3-900GB.qcow2 --count ' \
 + str(num_workers + num_ps) + ' --hints nicModel=e1000'
 #TEMP: trying a nicModel of virtio instead of e1000
-subprocess.call('ssh tashi "' + create_cmd + '"',shell=True)
+if use_existing_vm == 'False':
+	subprocess.call('ssh tashi "' + create_cmd + '"',shell=True)
 subprocess.call('ssh tashi "tashi getMyInstances" > status.txt',shell=True)
 
 #sleep for a while
