@@ -74,17 +74,14 @@ for i in range(num_workers):
 for i in range(num_ps):
         # tensorflow python args
         if async == 'False':
-                comm_ps = './tensorflow/models/image/cifar10/cifar10_replica.py --ps_hosts=' \
+                comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica_test1.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="ps" --task_index=' + str(i) + \
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=True' + ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + ' --layers_to_train=' + str(layers_to_train)
         if async == 'True':
                 comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="ps" --task_index=' + str(i) + \
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=True --replicas_to_aggregate=' + str(num_sync)
-                comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
-        + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="ps" --task_index=' + str(i) + \
-        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + ' --layers_to_train=' + str(layers_to_train)
-
+                
         #copy the network monitoring tool
         subprocess.call('scp log_network_BW.py root@' + name + '-0:/root/tensorflow',shell=True)
 
@@ -105,13 +102,13 @@ for i in range(num_ps):
 for i in range(num_workers):
         # tensorflow python args
         if async == 'False':
-                comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
+                comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica_test1.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="worker" --task_index=' + str(i) + \
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=True' + ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + ' --layers_to_train=' + str(layers_to_train)
         if async == 'True':
                 comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="worker" --task_index=' + str(i) + \
-        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + ' --layers_to_train=' + str(layers_to_train)
+        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False'
 
         #commands to launch on each vm
         comm0 = 'export PATH=\"$PATH:$HOME/bin\";'
