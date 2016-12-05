@@ -21,3 +21,21 @@ NOTE: In some places, the scripts has some hard constants because they were
 designed for 1 ps. If multiple ps are going to be created, replace the constants
 with the necessary ps id.
 
+
+*********************************************************************************
+
+For the approximation runs, these scripts will be useful (a cycle consists of 
+launching these scripts in the following order)
+
+launcher_justrun.py - launch the approximation run
+monitor_2.py - monitor the progress of a run/ copy all the necessary files after 
+	       the run finishes
+launcher_killall.py - kill all python processes and erase files
+
+the --help flag should be used to see what files need to be specified
+
+I have added comments with #SANDEEP in the launcher_justrun.py so that you can
+modify the script as necessary for the approximation runs
+
+CAUTION: check that all the files have been copied by the monitor_2.py before you
+use the launcher_killall.py
