@@ -11,6 +11,9 @@ parser.add_argument("--num_parameter_servers", help="Specify number of parameter
 parser.add_argument("--async",help="Specify if the training should be done synchronously or not")
 parser.add_argument("--num_sync",help="If async=True, how many workers should be synchronously updated",type=int)
 parser.add_argument("--train_steps",help="Specify number of training steps",type=int)
+parser.add_argument("--approx_step",help="Step to start approximations",type=int, default=1000000000)
+parser.add_argument("--approx_interval",help="Approximate every x steps",type=int,default=1)
+parser.add_argument("--layers_to_train",help="Comma separated list of cifar10 model layers",type=str,default='softmax_linear,local4,local3,conv2,conv1')
 #SANDEEP add flags that you will need for the approximation script
 args = parser.parse_args()
 
@@ -21,6 +24,9 @@ num_ps = args.num_parameter_servers
 async = args.async
 num_sync = args.num_sync
 train_steps = args.train_steps
+approx_step = args.approx_step
+approx_interval = args.approx_interval
+layers_to_train = args.layers_to_train
 
 # specifying the ip and port num of ps
 ps_str = ''
@@ -47,9 +53,11 @@ for i in range(num_ps):
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=True'
 	# SANDEEP: add flags above based on your approximation script
         if async == 'True':
-                comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
+                comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica_test1.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="ps" --task_index=' + str(i) + \
-        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False'
+        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + \
+	' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
+	' --layers_to_train=' + str(layers_to_train)
 	# SANDEEP: add flags above based on your approximation script
 
         #copy the network monitoring tool
@@ -80,9 +88,11 @@ for i in range(num_workers):
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=True'
 	# SANDEEP: add flags above based on your approximation script
         if async == 'True':
-                comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
+                comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica_test1.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="worker" --task_index=' + str(i) + \
-        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False'
+        ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + \
+	' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
+	' --layers_to_train=' + str(layers_to_train)
 
         subprocess.call('scp log_cpu_util.py root@' + name + str(i+num_ps) + ':/root/tensorflow',shell=True)
 	# SANDEEP: add flags above based on your approximation script

@@ -115,5 +115,4 @@ for i in range(num_workers):
         subprocess.call('ssh -o StrictHostKeyChecking=no root@' + name + str(i+num_ps) + ' "' + comm0 + comm1 + comm2 + '"',shell=True)
         print('ssh -o StrictHostKeyChecking=no root@' + name + str(i+num_ps) + ' "' + comm0 + comm1 + comm2 + '"')
         #time.sleep(3) #give time to launch the command
-        subprocess.call('echo "launched a worker"',shell=True)
-~                                                                
+        subprocess.call('echo "launched a worker"',shell=True)                                                            
