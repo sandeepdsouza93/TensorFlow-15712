@@ -56,7 +56,7 @@ for i in range(num_ps):
                 comm_ps = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="ps" --task_index=' + str(i) + \
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + \
-	+ ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
+	' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
 	' --layers_to_train=' + str(layers_to_train)
 	# SANDEEP: add flags above based on your approximation script
 
@@ -91,7 +91,7 @@ for i in range(num_workers):
                 comm_worker = './tensorflow/models/image/cifar10_new/cifar10_replica.py --ps_hosts=' \
         + ps_str + ' --worker_hosts=' + workers_str + ' --job_name="worker" --task_index=' + str(i) + \
         ' --num_gpus=0 --train_steps=' + str(train_steps) + ' --sync_replicas=False' + \
-	+ ' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
+	' --approx_step=' + str(approx_step) + ' --approx_interval=' + str(approx_interval) + \
 	' --layers_to_train=' + str(layers_to_train)
 
         subprocess.call('scp log_cpu_util.py root@' + name + str(i+num_ps) + ':/root/tensorflow',shell=True)
