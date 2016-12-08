@@ -17,5 +17,5 @@ def FileSizeTooLarge():
 time.sleep(180) # allow tensorflow to start     
 
 while(FileSizeTooLarge() == 0):
-        time.sleep(900)  #log every 15 minutes 
-        subprocess.call('mpstat >> /mnt/CPU_stats.txt',shell=True)
+        time.sleep(300)  #log every 5 minutes 
+        subprocess.call('sar -u 5 5 >> /mnt/CPU_stats.txt',shell=True)
